@@ -161,11 +161,50 @@ for user in users:
 
 
 
+### API를 이용하여 XML파일 불러오고 원하는 데이터 추출
+
+```python
+import requests
+from bs4 import BeautifulSoup
+
+keyword = '스마트폰'
+google_related_keyword_api = 'http://suggestqueries.google.com/complete/search?output=toolbar&q=' + keyword
+response = requests.get(google_related_keyword_api)       # 파일이 아니라, 데이터를 Open API 에서 가져오기 위한 함수
+soup = BeautifulSoup(response.content, 'xml')             # requests.get() 의 리턴값은 객체
+                                                          # 객체.content 에 가져온 데이터가 있음
+
+datas1 = soup.select('suggestion')
+
+for item in datas1:
+    print(item['data'])
+```
 
 
 
+### JSON 데이터 포멧 이해하기
+
+* JavaScript Object Notation 줄임말
+* JSON은 서버와 클라이언트 또는 컴퓨터/프로그램 사이에데이터를 주고 받을 때 사용하는 데이터 포멧
+* 키와 값을 괄호와 세미콜론과 같이 간단한 기호로 구성하여 표현할 수 있고, 언어나 운영체제에 구애받지 않기 때문에 많이 사용됨
+* 특히 웹/앱 환경에서 Rest API를 사용하여, 서버와 클라이언트 사이에 데이터를 주고 받을때 많이 사용
+* JSON 포멧 예
+  * {"id":"01", "language":"Java", "edition": "third", "author":"Herbert Schildt"}
 
 
+
+### JSON 데이터 포멧 읽기
+
+```python
+import json
+
+# 변수에 문자열로 된 JSON 포멧의 데이터가 있을 경우
+data = '{ "id":"01", "language": "Java", "edition": "third", "author": "Herbert Schildt" }' 
+
+jsondata = json.loads(data)
+print (jsondata['id'], jsondata['language'], jsondata['edition'], jsondata['author'], type(jsondata))
+```
+
+* 반대로 json.dumps() 함수로 파이썬 딕셔너리 데이터를 JSON 문자열 데이터로 변환할 수 있음
 
 
 
